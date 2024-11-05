@@ -91,5 +91,7 @@ Extract TAGs
 python TAGs_finder.py
 ```
 Visualize the results
+Distribution of number of genes in TAGs
 ![Distribution_TAGs](gene_distribution.png)
+Barplot of number of TAGs per Chromosome
 ![TAGs_per_Chrom](tag_per_chrom.png)
