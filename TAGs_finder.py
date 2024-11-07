@@ -18,7 +18,7 @@ def find_tandem_array_genes(blast_results, family_dict):
 
     # Organize genes by chromosome and avoid duplicates
     for row in blast_results:
-        query_id, subject_id = row[0], row[1]
+        query_id, subject_id = row[20], row[25]
         query_start, query_end = int(row[16]), int(row[17])
         subject_start, subject_end = int(row[21]), int(row[22])
         chrom = row[18]
