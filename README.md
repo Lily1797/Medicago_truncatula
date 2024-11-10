@@ -64,11 +64,10 @@ Extract TAGs
 ```
 python scipts/TAGs_finder.py
 ```
-Analyze the results
 We identified 4499 (13003 genes) and 4191 (12221 genes) TAGs for low and high stringency dataset, respectively.
 What are the biggest TAGs?
-  For low stringency set
 ```
+# For low stringency set
 $awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_low.txt | sort -k3,3nr | head -n 10
 TAG2099 Chromosome:4 30
 TAG2996 Chromosome:6 27
@@ -80,9 +79,8 @@ TAG3464 Chromosome:7 20
 TAG935 Chromosome:2 20
 TAG2527 Chromosome:5 19
 TAG3992 Chromosome:8 19
-```
-  For high stringency set
-```
+
+#For high stringency set
 $awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_high.txt | sort -k3,3nr | head -n 10
 TAG2825 Chromosome:6 31
 TAG1971 Chromosome:4 30
@@ -95,7 +93,7 @@ TAG2831 Chromosome:6 21
 TAG872 Chromosome:2 21
 TAG1316 Chromosome:3 18
 ```
-*Visualization*
+Visualize the results
 ```
 python scipts/plot_TAGs.py
 ```
