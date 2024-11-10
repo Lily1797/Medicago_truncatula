@@ -1,25 +1,24 @@
-# Medicago_truncatula
- Comparative genomics project
+# Comparative genomics project for *Medicago truncatula*
  For detailed analysis workflow, visit the [Github repository](https://github.com/Lily1797/Medicago_truncatula.git)
 
 ## Data
 In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~412 Mb.
-Number of genes: 51519
-Number of isoforms: ??
+Number of genes: 51519;
+Number of isoforms: ??.
 
 Count number of sequences located on chromosomes and scaffolds
 ```
 awk '/^>/ { if (/chromosome:/) chr_count++; else if (/:scaffold/) scaffold_count++; } END { print "Chromosome sequences:", chr_count; print "Scaffold sequences:", scaffold_count; }' Medicago_truncatula.MedtrA17_4.0.pep.all.fa
 ```
-Chromosome sequences: 54929
-Scaffold sequences: 2656
+Chromosome sequences: 54929;
+Scaffold sequences: 2656.
 
 ## Workflow
-### I.	Determine the number of duplicate genes in my genome
+### I.	Determine the number of duplicat genes in my genome
 #### 1. Update Blast result
 A Python script (blast_extend.py) enriched the BLAST results with four additional columns: query length, subject length, query coverage, and subject coverage. The enriched results were saved to output_blast.txt.
 ```
-python3 blast_extend.py
+python scipts/blast_extend.py
 ```
 As no mitochondrial or chloroplast sequences were identified in our genome, this step was omitted. To streamline subsequent genome map analysis, we filtered the BLAST results to include only sequences located on chromosomes. Additionally, ten columns were added to the filtered BLAST results, specifying the positions of the sequences on the chromosomes (query start, query end, query chrom, query strand, query geneID, subject start, subject end, subject chrom, subject strand and subject geneID). The updated results were saved to update_blast_results.txt.
 ```
@@ -27,7 +26,7 @@ As no mitochondrial or chloroplast sequences were identified in our genome, this
 awk '/^>/ {if (/chromosome:/) { split($0, a, " "); seq_id = a[1]; seq_id = substr(seq_id, 2); split(a[3], b, ":"); start = b[4]; end = b[5]; chrom = b[3]; strand = b[6]; split(a[4], c, ":"); geneid = c[2]; print seq_id "\t" start "\t" end "\t" chrom "\t" strand "\t" geneid;}}' Medicago_truncatula.MedtrA17_4.0.pep.all.fa > positions.txt
 
 # Filter BLAST results and add information
-python3 add_position.py
+python scipts/add_position.py
 ```
 We then filter the result based on percentage of identity, query coverage and subject coverage to generate two distinct datasets: one with low stringency and another with high stringency.
 ```
@@ -48,7 +47,7 @@ awk '{print $21, $26, $12}' homolog_high_unique.txt > cluster_input_high.txt
 ```
 We ran the clustering with the MCL method for the two datasets. We identified 4938 (43300 genes) and 7006 (38853 genes) families for low and high stringency dataset, respectively, and then visualized the clustering result.
 ```
-python plot_cluster.py
+python scipts/plot_cluster.py
 ```
 Distribution of number of genes across families
 ![Distribution_clusters](./figures/cluster_distribution.png)
@@ -63,10 +62,9 @@ awk -F'\t' '$19 == $24' homolog_high_unique.txt > same_chromosomes_high.txt
 ```
 Extract TAGs 
 ```
-python TAGs_finder.py
+python scipts/TAGs_finder.py
 ```
-
-##### Analyze the results
+Analyze the results
 We identified 4499 (13003 genes) and 4191 (12221 genes) TAGs for low and high stringency dataset, respectively.
 What are the biggest TAGs?
   For low stringency set
@@ -99,7 +97,7 @@ TAG1316 Chromosome:3 18
 ```
 *Visualization*
 ```
-python plot_TAGs.py
+python scipts/plot_TAGs.py
 ```
 Distribution of number of genes in TAGs
 ![Distribution_TAGs](./figures/gene_distribution.png)
