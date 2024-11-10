@@ -1,14 +1,19 @@
 # Medicago_truncatula
  Comparative genomics project
+ For detailed analysis workflow, visit the [Github repository](https://github.com/Lily1797/Medicago_truncatula.git)
 
 ## Data
-In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ?? Mb.
+In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~430 Mb.
+Number of genes: ??
+Number of isoforms: ??
 The dataset includes three files...
 
 Count number of sequences located on chromosomes and scaffolds
 ```
 awk '/^>/ { if (/chromosome:/) chr_count++; else if (/:scaffold/) scaffold_count++; } END { print "Chromosome sequences:", chr_count; print "Scaffold sequences:", scaffold_count; }' Medicago_truncatula.MedtrA17_4.0.pep.all.fa
 ```
+Chromosome sequences: 54929
+Scaffold sequences: 2656
 
 ## Workflow
 ### I.	Determine the number of duplicate genes in my genome
@@ -78,22 +83,80 @@ hist2 <- ggplot(count_low_df, aes(x = Count)) +
 
 grid.arrange(hist1, hist2, ncol = 2)
 ```
-![Distribution_clusters](distribution_cluster.png)
+We identified 4938 and 7006 families for low and high stringency dataset, respectively.
+![Distribution_clusters](./figures/cluster_distribution.png)
 
 #### TAGs
-Extract homologous pairs on the same chromosome and same strand.
+Extract homologous pairs on the same chromosome.
 ```
 awk -F'\t' '$19 == $24' homolog_low_unique.txt > same_chromosomes_low.txt
 awk -F'\t' '$19 == $24' homolog_high_unique.txt > same_chromosomes_high.txt
-awk -F'\t' '$20 == $25' same_chromosomes_low.txt > final_low.txt
-awk -F'\t' '$20 == $25' same_chromosomes_high.txt > final_high.txt
 ```
 Extract TAGs 
 ```
 python TAGs_finder.py
 ```
-Visualize the results
+
+##### Analyze the results
+We identified 4499 and 4191 TAGs for low and high stringency dataset, respectively.
+What are the biggest TAGs?
+  For low stringency set
+```
+awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_low.txt | sort -k3,3nr | head -n 10
+TAG2099 Chromosome:4 30
+TAG2996 Chromosome:6 27
+TAG118 Chromosome:1 26
+TAG4177 Chromosome:8 23
+TAG2768 Chromosome:5 22
+TAG3010 Chromosome:6 22
+TAG3464 Chromosome:7 20
+TAG935 Chromosome:2 20
+TAG2527 Chromosome:5 19
+TAG3992 Chromosome:8 19
+```
+  For high stringency set
+```
+awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_high.txt | sort -k3,3nr | head -n 10
+TAG2825 Chromosome:6 31
+TAG1971 Chromosome:4 30
+TAG2819 Chromosome:6 28
+TAG3091 Chromosome:6 26
+TAG3941 Chromosome:8 24
+TAG2599 Chromosome:5 22
+TAG3259 Chromosome:7 22
+TAG2831 Chromosome:6 21
+TAG872 Chromosome:2 21
+TAG1316 Chromosome:3 18
+```
+*Visualization*
+```
+python plot_TAGs.py
+```
 Distribution of number of genes in TAGs
-![Distribution_TAGs](gene_distribution.png)
+![Distribution_TAGs](./figures/gene_distribution.png)
+
 Barplot of number of TAGs per Chromosome
-![TAGs_per_Chrom](tag_per_chrom.png)
+![TAGs_per_Chrom](./figures/tag_per_chrom.png)
+
+Number of duplicated genes inside and outside TAGs
+
+Inside the TAGs, are gene oriented significantly the same way?
+
+
+#### Ks value
+We calculated Ks values for the ?? stringency dataset as it is better.
+Script to calculate all gene pairs inside families and store list of pairs
+```
+# There is a Blast command to retrieve the name of all pairs of genes (last year course) 
+```
+Retrieve the cds sequences on Ensembl plants, only the longset isoform
+
+Script to calculate Ks values for all pairs with PAML
+```{bash}
+# for loop for all pairs of genes
+
+```
+Selection of Ks values < threshold  or with small SD
+
+Analyze the results
+Are the TAGs pairs different in age with the other duplicate pairs?
