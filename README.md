@@ -3,10 +3,9 @@
  For detailed analysis workflow, visit the [Github repository](https://github.com/Lily1797/Medicago_truncatula.git)
 
 ## Data
-In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~430 Mb.
-Number of genes: ??
+In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~412 Mb.
+Number of genes: 51519
 Number of isoforms: ??
-The dataset includes three files...
 
 Count number of sequences located on chromosomes and scaffolds
 ```
@@ -22,7 +21,7 @@ A Python script (blast_extend.py) enriched the BLAST results with four additiona
 ```
 python3 blast_extend.py
 ```
-As no mitochondrial or chloroplast sequences were identified in our genome, this step was omitted. To streamline subsequent genome map analysis, we filtered the BLAST results to include only sequences located on chromosomes. Additionally, eight columns were added to the filtered BLAST results, specifying the positions of the sequences on the chromosomes (query start, query end, query chrom, query strand, query geneID, subject start, subject end, subject chrom, subject strand and subject geneID). The updated results were saved to update_blast_results.txt.
+As no mitochondrial or chloroplast sequences were identified in our genome, this step was omitted. To streamline subsequent genome map analysis, we filtered the BLAST results to include only sequences located on chromosomes. Additionally, ten columns were added to the filtered BLAST results, specifying the positions of the sequences on the chromosomes (query start, query end, query chrom, query strand, query geneID, subject start, subject end, subject chrom, subject strand and subject geneID). The updated results were saved to update_blast_results.txt.
 ```
 # Extract Positions, chromosome, strand, and geneID from the FASTA File
 awk '/^>/ {if (/chromosome:/) { split($0, a, " "); seq_id = a[1]; seq_id = substr(seq_id, 2); split(a[3], b, ":"); start = b[4]; end = b[5]; chrom = b[3]; strand = b[6]; split(a[4], c, ":"); geneid = c[2]; print seq_id "\t" start "\t" end "\t" chrom "\t" strand "\t" geneid;}}' Medicago_truncatula.MedtrA17_4.0.pep.all.fa > positions.txt
@@ -47,44 +46,14 @@ Extract specific columns from the homolog files and created input files for the 
 awk '{print $21, $26, $12}' homolog_low_unique.txt > cluster_input_low.txt
 awk '{print $21, $26, $12}' homolog_high_unique.txt > cluster_input_high.txt
 ```
-We ran the clustering with the MCL method for the two datasets and visualize the clustering result using R.
-```{r}
-# Import dataset 
-MCL_high <- read.table("MCL_high.tabular", header = FALSE, fill = TRUE, sep = "\t", stringsAsFactors = FALSE, na.strings = "")
-MCL_low <- read.table("MCL_low.tabular", header = FALSE, fill = TRUE, sep = "\t", stringsAsFactors = FALSE, na.strings = "")
-
-# Count the number of sequences in each family (row)
-count_high <- apply(MCL_high, 1, function(row) sum(!is.na(row)))
-count_low <- apply(MCL_low, 1, function(row) sum(!is.na(row)))
-
-# Convert sequence counts to a data frame for ggplot
-count_high_df <- data.frame(Count = count_high)
-count_low_df <- data.frame(Count = count_low)
-
-# Plot histogram using ggplot
-hist1 <- ggplot(count_high_df, aes(x = Count)) +
-  geom_histogram(binwidth = 1, fill = "lightblue") +
-  labs(
-    title = "High stringency",
-    x = "No. of sequences per family",
-    y = "Frequency"
-  ) +
-  ylim(0, 1500) + 
-  theme_minimal()
-hist2 <- ggplot(count_low_df, aes(x = Count)) +
-  geom_histogram(binwidth = 1, fill = "lightblue") +
-  labs(
-    title = "Low stringency",
-    x = "No. of sequences per family",
-    y = "Frequency"
-  ) +
-  ylim(0, 1500) + 
-  theme_minimal()
-
-grid.arrange(hist1, hist2, ncol = 2)
+We ran the clustering with the MCL method for the two datasets. We identified 4938 (43300 genes) and 7006 (38853 genes) families for low and high stringency dataset, respectively, and then visualized the clustering result.
 ```
-We identified 4938 and 7006 families for low and high stringency dataset, respectively.
+python plot_cluster.py
+```
+Distribution of number of genes across families
 ![Distribution_clusters](./figures/cluster_distribution.png)
+Number of duplicated genes and singletons
+![Duplicates_singletons](./figures/dup_single.png)
 
 #### TAGs
 Extract homologous pairs on the same chromosome.
@@ -98,11 +67,11 @@ python TAGs_finder.py
 ```
 
 ##### Analyze the results
-We identified 4499 and 4191 TAGs for low and high stringency dataset, respectively.
+We identified 4499 (13003 genes) and 4191 (12221 genes) TAGs for low and high stringency dataset, respectively.
 What are the biggest TAGs?
   For low stringency set
 ```
-awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_low.txt | sort -k3,3nr | head -n 10
+$awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_low.txt | sort -k3,3nr | head -n 10
 TAG2099 Chromosome:4 30
 TAG2996 Chromosome:6 27
 TAG118 Chromosome:1 26
@@ -116,7 +85,7 @@ TAG3992 Chromosome:8 19
 ```
   For high stringency set
 ```
-awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_high.txt | sort -k3,3nr | head -n 10
+$awk -F' ' '{print $1, $2, gsub(",", ",", $3)+1}' TAGs_high.txt | sort -k3,3nr | head -n 10
 TAG2825 Chromosome:6 31
 TAG1971 Chromosome:4 30
 TAG2819 Chromosome:6 28
@@ -134,12 +103,10 @@ python plot_TAGs.py
 ```
 Distribution of number of genes in TAGs
 ![Distribution_TAGs](./figures/gene_distribution.png)
-
 Barplot of number of TAGs per Chromosome
 ![TAGs_per_Chrom](./figures/tag_per_chrom.png)
-
 Number of duplicated genes inside and outside TAGs
-
+![TAG_ NonTAG](./figures/tag_nontag.png)
 Inside the TAGs, are gene oriented significantly the same way?
 
 
