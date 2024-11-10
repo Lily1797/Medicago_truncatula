@@ -53,11 +53,11 @@ def find_tandem_array_genes(blast_results, family_dict):
                     continue
 
                 # Check if next gene belongs to the same family and on the same strand
-                if next_gene_id in family_dict.get(gene_id, []) and next_strand == strand:
+                if next_gene_id in family_dict.get(gene_id, []): # and next_strand == strand:
                     current_tag.append((next_gene_id, next_start, next_end, next_strand))
                     used_genes.add(next_gene_id)
                     spacer_found = False  # Reset spacer check as we found a homologous gene
-                    end = next_end  # Update TAG boundary
+                    #end = next_end  # Update TAG boundary
                 else:
                     # Encounter a potential spacer
                     if spacer_found:
@@ -94,13 +94,11 @@ def main(file_path, gene_family_file, output_file_path):
     tags = find_tandem_array_genes(blast_results, family_dict)
     write_tags_to_file(tags, output_file_path)
 
-
-
 # Usage
-low_path = 'final_low.txt'  # Path to input file
+low_path = 'same_chromosomes_low.txt'  # Path to input file
 gene_family_low = 'MCL_low.tabular'
 output_low = 'TAGs_low.txt'  # Path to the output file
-high_path = 'final_high.txt'  # Path to input file
+high_path = 'same_chromosomes_high.txt'  # Path to input file
 gene_family_high = 'MCL_high.tabular'
 output_high = 'TAGs_high.txt'  # Path to the output file
 
