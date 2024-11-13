@@ -1,6 +1,7 @@
 import csv
 from collections import defaultdict
 
+# Step 1: Load gene families 
 def load_gene_families(gene_family_file):
     family_dict = {}
     with open(gene_family_file, 'r') as f:
