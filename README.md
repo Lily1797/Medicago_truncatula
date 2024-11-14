@@ -1,10 +1,10 @@
 # Comparative genomics project for *Medicago truncatula*
- For detailed analysis workflow, visit the [Github repository](https://github.com/Lily1797/Medicago_truncatula.git)
+For detailed analysis workflow, visit the [Github repository](https://github.com/Lily1797/Medicago_truncatula.git)
 
 ## Data
 In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~412 Mb.
-Number of genes: 51519;
-Number of isoforms: ??.
+Number of genes: 51519, 50444 protein-coding genes.
+Number of isoforms: 57585.
 
 Count number of sequences located on chromosomes and scaffolds
 ```
@@ -103,6 +103,9 @@ Barplot of number of TAGs per Chromosome
 ![TAGs_per_Chrom](./figures/tag_per_chrom.png)
 Number of duplicated genes inside and outside TAGs
 ![TAG_ NonTAG](./figures/tag_nontag.png)
+Genomic ideogram with TAGs
+![Ideogram_high](./figures/Ideogram_high.png)
+![Ideogram_low](./figures/Ideogram_low.png)
 Inside the TAGs, are gene oriented significantly the same way?
 
 
