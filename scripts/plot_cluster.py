@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 #Distribution of Number of Genes across Families
@@ -40,7 +42,8 @@ plot_gene_distribution(family_low, family_high)
 # Duplicates and Singletons in Low vs High Stringency Datasets
 datasets = ['Low Stringency', 'High Stringency']
 duplicates = [43300, 38853]  
-singletons = [51519 - 43300, 51519 - 38853] 
+singletons = [50894 - 43300, 50894 - 38853] 
+total_genes = [50894, 50894]  # Total genes for each dataset
 
 fig, ax = plt.subplots(figsize=(8, 6))
 
@@ -53,12 +56,15 @@ ax.set_title('Duplicated and Singletons in Low vs High Stringency Datasets')
 ax.legend()
 
 for i, (bar1, bar2) in enumerate(zip(bars1, bars2)):
-    # Non-TAG gene count
+    # singletons count and proportion
+    single_proportion = singletons[i] / total_genes[i] * 100
     ax.text(bar1.get_x() + bar1.get_width() / 2, bar1.get_height() / 2,
-            f'{singletons[i]}', ha='center', va='center', color='black', fontsize=10)
-    # TAG gene count
-    ax.text(bar2.get_x() + bar2.get_width() / 2, bar1.get_height() + bar2.get_height() / 2,
-            f'{duplicates[i]}', ha='center', va='center', color='black', fontsize=10)
+            f'{singletons[i]} ({single_proportion:.1f}%)', ha='center', va='center', color='black', fontsize=10)
     
+    # Duplicate gene count and proportion
+    dup_proportion = duplicates[i] / total_genes[i] * 100
+    ax.text(bar2.get_x() + bar2.get_width() / 2, bar1.get_height() + bar2.get_height() / 2,
+            f'{duplicates[i]} ({dup_proportion:.1f}%)', ha='center', va='center', color='black', fontsize=10)
+
 plt.savefig('dup_single.png', format='png', dpi=600)
 plt.show()
