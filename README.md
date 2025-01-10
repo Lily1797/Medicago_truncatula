@@ -42,8 +42,8 @@ awk '{ if ($1 < $2) {  key = $1 "\t" $2 } else { key = $2 "\t" $1  } if (!seen[k
 #### 2. Clustering
 Extract specific columns from the homolog files and created input files for the MCL clustering method.
 ```
-awk '{print $21, $26, $12}' homolog_low_unique.txt > cluster_input_low.txt
-awk '{print $21, $26, $12}' homolog_high_unique.txt > cluster_input_high.txt
+awk '{print $1, $2, $12}' homolog_low_unique.txt > cluster_input_low.txt
+awk '{print $1, $2, $12}' homolog_high_unique.txt > cluster_input_high.txt
 ```
 We ran the clustering with the MCL method for the two datasets. We identified 4938 (43300 genes) and 7006 (38853 genes) families for low and high stringency dataset, respectively, and then visualized the clustering result.
 ```
