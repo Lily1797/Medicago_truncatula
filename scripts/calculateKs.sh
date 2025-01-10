@@ -8,7 +8,7 @@ control_file_template="/home/huongpm//data/comparative_genomics/Medicago_truncat
 yn00_executable="/home/huongpm/software/paml/bin/yn00"
 seq_retrieve_script="/home/huongpm//data/comparative_genomics/Medicago_truncatula/seq_retrieve.py"
 ks_extract_script="/home/huongpm//data/comparative_genomics/Medicago_truncatula/extract_ks.py"
-blast_file="/home/huongpm//data/comparative_genomics/Medicago_truncatula/testks.txt"
+blast_file="/home/huongpm//data/comparative_genomics/Medicago_truncatula/dup_pairs_high.txt"
 output_file="/home/huongpm//data/comparative_genomics/Medicago_truncatula/Ks_calculated.txt"
 yn_output="2YN.dS"
 
