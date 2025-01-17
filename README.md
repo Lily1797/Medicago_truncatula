@@ -2,12 +2,13 @@
 
 ## Data
 In this project, we analyzed the dupplicate genes in the genomes of the *Medicago truncatula* plant. The *M. truncatula* genome contains eight chromosomes with the genome size of ~384 Mb.
-Number of genes: 50894.
+
+Number of genes: 50894;
 Number of isoforms: 57585.
 
 Files provided by the professor:
-1. *Medicago_truncatula_Blastp_longIsoforme: Results of BLASTP all-against-all for the longest isoforms of protein sequences.
-2. *Medicago_truncatula.MedtrA17_4.0.pep.all.fa: FASTA file containing protein sequences.
+1. *Medicago_truncatula_Blastp_longIsoforme*: Results of BLASTP all-against-all for the longest isoforms of protein sequences.
+2. *Medicago_truncatula.MedtrA17_4.0.pep.all.fa*: FASTA file containing protein sequences.
 
 Count number of sequences located on chromosomes and scaffolds
 ```
@@ -19,7 +20,7 @@ Scaffold sequences: 2656.
 ## Workflow
 ### I.	Determine the number of duplicat genes in my genome
 #### 1. Update Blast result
-A Python script (blast_extend.py) enriched the BLAST results with four additional columns: query length, subject length, query coverage, and subject coverage. The enriched results were saved to output_blast.txt.
+A Python script *blast_extend.py* enriched the BLAST results with four additional columns: query length, subject length, query coverage, and subject coverage. The enriched results were saved to output_blast.txt.
 ```
 python scipts/blast_extend.py
 ```
@@ -127,7 +128,7 @@ From a total of 213887 duplicated pairs, we filtered 155302 pairs with Ks values
 ```
 awk '$3 >= 3' Ks_calculated.txt > Ks_final.txt
 ```
-Scripts for douwnstream analysis of calculated Ks values:
+Scripts for downstream analysis of calculated Ks values:
 - *addTAGKs.py*: script for adding a new column to the  *Ks_final.txt* file to distinguish between TAG and non-TAG pairs.
 - *Ks_stat.py*: script for statistical test of Ks value distribution and visualization.
 
